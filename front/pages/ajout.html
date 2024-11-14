@@ -1,0 +1,42 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Ajout Livre</title>
+</head>
+
+<body>
+    <form id="ajoutLivre">
+        <h1>Ajouter un Livre</h1>
+        <p>
+            <label for="titre">Titre:</label>
+            <input id="titre" type="text" name="titre" required>
+        </p>
+        <p>
+            <label for="auteur">Auteur:</label>
+            <input id="auteur" type="text" name="auteur" required>
+        </p>
+        <p>
+            <label for="pages">Pages:</label>
+            <input id="pages" type="number" name="pages" required>
+        </p>
+        <p>
+            <label for="dateSortie">Date de sortie:</label>
+            <input id="dateSortie" type="date" name="dateSortie" required>
+        </p>
+        <p>
+            <label for="image">Image:</label>
+            <input id="image" type="file" name="image" required>
+        </p>
+        <p>
+            <button type="submit">Envoyer</button>
+        </p>
+    </form>
+
+    <script src="../assets/js/post.js"></script>
+
+</body>
+
+</html>

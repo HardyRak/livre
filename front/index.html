@@ -1,0 +1,66 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/indexStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Liste des livres</title>
+</head>
+
+<body>
+    <div>
+        <h1>Liste des livres</h1>
+        <a href="pages/ajout.html">
+            <button>➕</button>
+        </a>
+        <div style="max-height: 300px; overflow-y: auto;">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>
+                            Titre
+                            <i class="fas fa-sort-up" onclick="sortTable('titre', 1)" style="padding-left: 5px; cursor: pointer;"></i>
+                            <i class="fas fa-sort-down" onclick="sortTable('titre', -1)" style="padding-left: 5px; cursor: pointer;"></i>
+                        </th>
+                        <th>
+                            Pages
+                            <i class="fas fa-sort-up" onclick="sortTable('pages', 1)" style="padding-left: 5px; cursor: pointer;"></i>
+                            <i class="fas fa-sort-down" onclick="sortTable('pages', -1)" style="padding-left: 5px; cursor: pointer;"></i>
+                        </th>
+                        <th>Détails</th>
+                        <th>Supprimer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <p id="page"></p>
+        <div style="margin-top: 10px;">
+            <button id="prevButton" onclick="previousPage()">Précédent</button>
+            <input id="currentPage" type="number">
+            <button id="nextButton" onclick="nextPage()">Suivant</button>
+        </div>
+
+        <div id="details" style="display: none;">
+            <div>
+                <div>
+                    <p><strong>Details</strong></p>
+                    <p id="titre">Titre: </p>
+                    <p id="auteur">Auteur: </p>
+                    <p id="pages">Pages: </p>
+                    <p id="dateSortie">Date de sortie: </p>
+                </div>
+            </div>
+            <button onclick="closeDetails()">
+                Fermer
+            </button>
+        </div>
+    </div>
+
+    <script src="assets/js/fecth.js"></script>
+</body>
+
+</html>
