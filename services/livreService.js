@@ -46,10 +46,34 @@ const getBooksOrderByPage = async(limit,skip,orderType) => {
     return { books, totalItems };
 }
 
+const getListOfReaderBooks = async(idBook, page=1, limit=5) => {
+    try {
+        console.log(idBook);
+        const skip = (page - 1) * limit;
+        const livre = await Books.aggregate([
+            { $match: { _id: idBook } },      
+            {
+              $project: {
+                _id: 0,
+                titre: 1,
+                lecteur: { $slice: ["$Lecteur", skip, limit] }
+              }
+            }
+          ]);
+        if (!livre || livre.length === 0) {
+            throw new Error('Livre non trouvé');
+        }
+        return livre[0];
+    } catch (error) {
+        throw new Error(`Erreur lors de la récupération des lecteurs : ${error.message}`);
+    }
+}
+
 module.exports = {
     getBooks,
     getLivreById,
     createLivre,
     deleteLivre,
-    getTotalPages
+    getTotalPages,
+    getListOfReaderBooks
 };

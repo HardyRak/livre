@@ -58,4 +58,17 @@ router.delete('/livre/:id', async (req, res) => {
     }
 });
 
+router.get('/lecteur/:id/livre', async (req, res) => {
+    try {
+        const livre = await livreService.getListOfReaderBooks(req.params.id);
+        if (livre) {
+            res.status(200).json(livre);
+        } else {
+            res.status(404).json({ message: 'Livre non trouvé' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;
