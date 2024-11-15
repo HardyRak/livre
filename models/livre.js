@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const livre = new mongoose.Schema({
+const livreSchema = new mongoose.Schema({
   titre: {
     type: String,
     required: true,
@@ -22,9 +22,25 @@ const livre = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-  }
+  },
+  lecteurs: [
+    {
+      utilisateurId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Lecteur',
+        required: true,
+      },
+      nom: {
+        type: String,
+        required: true,
+      },
+      dateLecture: {
+        type: Date,
+        default: Date.now,
+      }
+    }
+  ]
 });
 
-const livres = mongoose.model('livre', livre);
-
-module.exports = livres;
+const Livre = mongoose.model('Livre', livreSchema);
+module.exports = Livre;
