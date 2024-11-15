@@ -1,5 +1,6 @@
 const Books = require('../models/livre');
-
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const getBooks = async (page = 1, limit = 5, order = 'id', orderType = 1) => {
     const skip = (page - 1) * limit;
     if(order=='titre'){
@@ -46,28 +47,40 @@ const getBooksOrderByPage = async(limit,skip,orderType) => {
     return { books, totalItems };
 }
 
-const getListOfReaderBooks = async(idBook, page=1, limit=5) => {
+const getListOfReaderBooks = async (idBook, page = 1, limit = 5) => {
     try {
         console.log(idBook);
+
         const skip = (page - 1) * limit;
+
+        if (!ObjectId.isValid(idBook)) {
+            throw new Error('ID du livre invalide');
+        }
+
         const livre = await Books.aggregate([
-            { $match: { _id: idBook } },      
+            { $match: { _id: new ObjectId(idBook) } },
             {
-              $project: {
-                _id: 0,
-                titre: 1,
-                lecteur: { $slice: ["$Lecteur", skip, limit] }
-              }
+                $project: {
+                    _id: 0,
+                    titre: 1,
+                    lecteur: { 
+                        $slice: ["$Lecteur", skip, limit] 
+                    }
+                }
             }
-          ]);
+        ]);
+
+        console.log(livre);
+
         if (!livre || livre.length === 0) {
             throw new Error('Livre non trouvé');
         }
+
         return livre[0];
     } catch (error) {
         throw new Error(`Erreur lors de la récupération des lecteurs : ${error.message}`);
     }
-}
+};
 
 module.exports = {
     getBooks,
