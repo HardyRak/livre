@@ -1,6 +1,6 @@
 const Books = require('../models/livre');
 
-const getBooks = async (page = 1, limit = 5, order = 'id', orderType = 1) => {
+const getBooks = async (page = 3, limit = 5, order = 'id', orderType = 1) => {
     const skip = (page - 1) * limit;
     if(order=='titre'){
         return await getBooksOrderByTitle(limit,skip,orderType);
@@ -46,10 +46,20 @@ const getBooksOrderByPage = async(limit,skip,orderType) => {
     return { books, totalItems };
 }
 
+const getBooksFiltred = async(limit,page,data) => {
+    const skip = (page - 1) * limit;
+    const filter = {};
+    if (data.dateSortie) filter.dateSortie = data.dateSortie;
+    const books = await Books.find(filter);
+    const totalItems = await Books.countDocuments();
+    return { books, totalItems };
+}
+
 module.exports = {
     getBooks,
     getLivreById,
     createLivre,
     deleteLivre,
-    getTotalPages
+    getTotalPages,
+    getBooksFiltred
 };

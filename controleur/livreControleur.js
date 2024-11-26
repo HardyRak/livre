@@ -1,11 +1,11 @@
+
 const express = require('express');
 const router = express.Router();
 
 const livreService = require('../services/livreService');
-
+const limit=5;
 router.get('/livre', async (req, res) => {
     try {
-        const limit = 5;
         const page = parseInt(req.query.page) || 1;
         const order = req.query.order
         const orderType=parseInt(req.query.orderType);
@@ -18,6 +18,14 @@ router.get('/livre', async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+});
+
+router.get('/livre/filtre',async( req, res ) => {
+    try{
+        const page = parseInt(req.query.page) || 1;
+    }catch(error){
+
     }
 });
 
@@ -37,9 +45,9 @@ router.get('/livre/:id', async (req, res) => {
 router.post('/livre', async (req, res) => {
     try {
         await livreService.createLivre(req.body);
-        const totalPage= await livreService.getTotalPages(5);
+        const totalPage= await livreService.getTotalPages(limit);
         res.status(201).json({
-            totalPage: totalPage
+            totalPages: totalPage
         });
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -52,7 +60,8 @@ router.delete('/livre/:id', async (req, res) => {
         if (!livre) {
             return res.status(404).json({ message: "Livre non trouvé" });
         }
-        res.status(201).json({message : "suppression"});
+        console.log(livreService.getTotalPages(5));
+        res.status(201).json({message : "suppression", totalPages : await livreService.getTotalPages(limit)});
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
