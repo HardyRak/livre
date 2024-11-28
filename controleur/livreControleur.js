@@ -24,8 +24,16 @@ router.get('/livre', async (req, res) => {
 router.get('/livre/filtre',async( req, res ) => {
     try{
         const page = parseInt(req.query.page) || 1;
+        const data = { dateSortie : req.query.dateSortie, minPage : req.query.minPage, maxPage : req.query.maxPage };
+        const { books, totalItems } = await livreService.getBooksFiltred(limit,page,data);
+        res.status(200).json({
+            totalItems,
+            totalPages: Math.ceil(totalItems / limit),
+            currentPage: page,
+            books
+        });
     }catch(error){
-
+        res.status(500).json({ message: error.message });
     }
 });
 

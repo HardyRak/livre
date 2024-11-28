@@ -46,14 +46,17 @@ const getBooksOrderByPage = async(limit,skip,orderType) => {
     return { books, totalItems };
 }
 
-const getBooksFiltred = async(limit,page,data) => {
+const getBooksFiltred = async (limit, page, data) => {
     const skip = (page - 1) * limit;
     const filter = {};
-    if (data.dateSortie) filter.dateSortie = data.dateSortie;
-    const books = await Books.find(filter);
-    const totalItems = await Books.countDocuments();
+    if (data.minPage) filter.pages = { $gte: data.minPage };
+    if (data.maxPage) filter.pages = { ...filter.pages, $lte: data.maxPage };
+    const books = await Books.find(filter)
+                             .skip(skip)
+                             .limit(limit);
+    const totalItems = await Books.countDocuments(filter);
     return { books, totalItems };
-}
+};
 
 module.exports = {
     getBooks,
